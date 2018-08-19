@@ -18,15 +18,35 @@ android {
     }
 }
 
+ext {
+    retrofit_version = '2.4.0'
+    runner_version = '1.0.2'
+    espresso_version = '3.0.2'
+    annotations_version = '27.1.1'
+    support_library_version = '27.1.1'
+    butterknife_version = '8.8.1'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    implementation 'com.squareup.retrofit2:converter-moshi:2.4.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation "com.android.support:appcompat-v7:$support_library_version"
+    implementation "com.android.support.constraint:constraint-layout:1.1.2"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.android.support.test.espresso:espresso-idling-resource:$espresso_version"
+    implementation 'com.jakewharton:butterknife:' + butterknife_version
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+
+
+    annotationProcessor 'com.jakewharton:butterknife-compiler:' + butterknife_version
 
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation group: 'commons-io', name: 'commons-io', version: '2.6'
+
+    androidTestImplementation "com.android.support.test:runner:$runner_version"
+    androidTestImplementation "com.android.support.test:rules:$runner_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation 'org.hamcrest:hamcrest-core:1.3'
+
 }
