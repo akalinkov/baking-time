@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/recipe_list_fragment"
+<android.support.v7.widget.RecyclerView android:id="@+id/rv_recipes_list"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:name="com.example.android.bakingtime.ui.RecipesListFragment" />
+    android:layout_height="match_parent"/>
