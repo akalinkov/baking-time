@@ -1,6 +1,7 @@
 package com.example.android.bakingtime.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -57,6 +58,7 @@ public class StepsFragment extends Fragment implements OnItemClickListener {
 
     @Override
     public void onItemClicked(int position) {
-        Toast.makeText(getContext(), "Clicked # " + position, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(getContext(), StepDetailsActivity.class);
+        startActivity(intent);
     }
 }
