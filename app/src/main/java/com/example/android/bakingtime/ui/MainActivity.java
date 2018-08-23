@@ -1,5 +1,6 @@
 package com.example.android.bakingtime.ui;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -69,6 +70,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRecipeClick(int position) {
         Log.d(TAG, "onRecipeClick: #" + position);
+        Intent intent = new Intent(this, RecipeDetailsActivity.class);
+        intent.putExtra(Recipe.CLICKED, mRecipes.get(position));
+        startActivity(intent);
     }
 
     @VisibleForTesting

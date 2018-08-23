@@ -17,7 +17,7 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.On
 
     private RecipesAdapter.RecipeItemClickListener mItemClickListener;
 
-    @BindView(R.id.iv_recipe_image)
+    @BindView(R.id.iv_recipe_icon)
     ImageView mImage;
 
     @BindView(R.id.tv_recipe_name)
