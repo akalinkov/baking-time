@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
-        implements RecipesDownloaderCallback, RecipesAdapter.RecipeItemClickListener{
+        implements RecipesDownloaderCallback, OnItemClickListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int RECIPE_VIEW_WIDTH = 800;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRecipeClick(int position) {
+    public void onItemClicked(int position) {
         Log.d(TAG, "onRecipeClick: #" + position);
         Intent intent = new Intent(this, RecipeDetailsActivity.class);
         intent.putExtra(Recipe.CLICKED, mRecipes.get(position));

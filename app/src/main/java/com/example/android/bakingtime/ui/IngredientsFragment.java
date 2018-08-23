@@ -28,8 +28,6 @@ public class IngredientsFragment extends Fragment {
 
         RecyclerView ingredientsView = rootView.findViewById(R.id.gv_ingredients_list);
         IngredientsAdapter adapter = new IngredientsAdapter(getContext(), mIngredientsList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        ingredientsView.setLayoutManager(layoutManager);
         ingredientsView.setAdapter(adapter);
 
         return rootView;

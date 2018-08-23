@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 
 public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private RecipesAdapter.RecipeItemClickListener mItemClickListener;
+    private OnItemClickListener mItemClickListener;
 
     @BindView(R.id.iv_recipe_icon)
     ImageView mImage;
@@ -27,7 +27,7 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.On
     TextView mServings;
 
     public RecipeViewHolder(View itemView,
-                            RecipesAdapter.RecipeItemClickListener itemClickListener) {
+                            OnItemClickListener itemClickListener) {
         super(itemView);
         mItemClickListener = itemClickListener;
         ButterKnife.bind(this, itemView);
@@ -45,6 +45,6 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.On
 
     @Override
     public void onClick(View v) {
-        mItemClickListener.onRecipeClick(getAdapterPosition());
+        mItemClickListener.onItemClicked(getAdapterPosition());
     }
 }

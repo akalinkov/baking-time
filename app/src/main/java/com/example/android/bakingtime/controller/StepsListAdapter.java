@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Step;
+import com.example.android.bakingtime.ui.OnItemClickListener;
 import com.example.android.bakingtime.ui.StepsViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -21,20 +21,22 @@ public class StepsListAdapter extends RecyclerView.Adapter<StepsViewHolder> {
 
     private List<Step> mStepsList;
     private Context mContext;
+    private OnItemClickListener mStepsCallback;
 
     @BindView(R.id.tv_step_description)
     TextView mDescription;
 
-    public StepsListAdapter(Context context, @NonNull List<Step> stepsList) {
+    public StepsListAdapter(Context context, @NonNull List<Step> stepsList, OnItemClickListener stepClickListener) {
         mContext = context;
         mStepsList = stepsList;
+        mStepsCallback = stepClickListener;
     }
 
     @NonNull
     @Override
     public StepsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_step, parent, false);
-        return new StepsViewHolder(itemView);
+        View stepView = LayoutInflater.from(mContext).inflate(R.layout.item_step, parent, false);
+        return new StepsViewHolder(stepView, mStepsCallback);
     }
 
     @Override

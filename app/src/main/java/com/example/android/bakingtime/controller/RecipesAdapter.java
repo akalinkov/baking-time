@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Recipe;
+import com.example.android.bakingtime.ui.OnItemClickListener;
 import com.example.android.bakingtime.ui.RecipeViewHolder;
 
 import java.util.List;
@@ -17,12 +18,12 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
 
     private static final String TAG = RecipesAdapter.class.getSimpleName();
     private List<Recipe> mRecipes;
-    public RecipeItemClickListener mRecipeItemClickListener;
+    public OnItemClickListener mRecipeCallback;
 
     public RecipesAdapter(@NonNull List<Recipe> recipes,
-                          @NonNull RecipeItemClickListener recipeItemClickListener) {
+                          @NonNull OnItemClickListener recipeItemClickListener) {
         this.mRecipes = recipes;
-        this.mRecipeItemClickListener = recipeItemClickListener;
+        this.mRecipeCallback = recipeItemClickListener;
     }
 
     @NonNull
@@ -30,7 +31,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View recipeView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_recipe, parent, false);
-        return new RecipeViewHolder(recipeView, mRecipeItemClickListener);
+        return new RecipeViewHolder(recipeView, mRecipeCallback);
     }
 
     @Override
@@ -47,9 +48,5 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
         mRecipes = recipes;
         Log.d(TAG, "replaceRecipes: notify data set changed");
         notifyDataSetChanged();
-    }
-
-    public interface RecipeItemClickListener {
-        void onRecipeClick(int position);
     }
 }
