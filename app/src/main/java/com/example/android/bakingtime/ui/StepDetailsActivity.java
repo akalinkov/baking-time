@@ -19,14 +19,11 @@ public class StepDetailsActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                case R.id.previous_step:
+                    mTextMessage.setText(R.string.title_previous);
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                case R.id.next_step:
+                    mTextMessage.setText(R.string.title_next);
                     return true;
             }
             return false;
