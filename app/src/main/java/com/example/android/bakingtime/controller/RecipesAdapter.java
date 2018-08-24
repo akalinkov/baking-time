@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Recipe;
 import com.example.android.bakingtime.ui.OnItemClickListener;
-import com.example.android.bakingtime.ui.RecipeViewHolder;
+import com.example.android.bakingtime.ui.recipes_list.RecipeViewHolder;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.android.bakingtime.ui;
+package com.example.android.bakingtime.ui.details;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,11 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.controller.StepsListAdapter;
 import com.example.android.bakingtime.model.Step;
+import com.example.android.bakingtime.ui.OnItemClickListener;
 
 import java.util.List;
 
@@ -59,6 +59,7 @@ public class StepsFragment extends Fragment implements OnItemClickListener {
     @Override
     public void onItemClicked(int position) {
         Intent intent = new Intent(getContext(), StepDetailsActivity.class);
+        intent.putExtra(Step.SAVED_INTENT, mStepsList.get(position));
         startActivity(intent);
     }
 }

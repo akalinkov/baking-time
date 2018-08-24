@@ -1,4 +1,4 @@
-package com.example.android.bakingtime.ui;
+package com.example.android.bakingtime.ui.recipes_list;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -19,6 +19,8 @@ import com.example.android.bakingtime.idlingResource.SimpleIdlingResource;
 import com.example.android.bakingtime.model.Recipe;
 import com.example.android.bakingtime.network.RecipesDownloader;
 import com.example.android.bakingtime.network.RecipesDownloaderCallback;
+import com.example.android.bakingtime.ui.OnItemClickListener;
+import com.example.android.bakingtime.ui.details.RecipeDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
-        implements RecipesDownloaderCallback, OnItemClickListener{
+        implements RecipesDownloaderCallback, OnItemClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int RECIPE_VIEW_WIDTH = 800;

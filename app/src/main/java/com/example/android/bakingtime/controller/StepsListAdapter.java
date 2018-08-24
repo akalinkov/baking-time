@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Step;
 import com.example.android.bakingtime.ui.OnItemClickListener;
-import com.example.android.bakingtime.ui.StepsViewHolder;
+import com.example.android.bakingtime.ui.details.StepsViewHolder;
 
 import java.util.List;
 

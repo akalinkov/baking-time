@@ -1,4 +1,4 @@
-package com.example.android.bakingtime.ui;
+package com.example.android.bakingtime.ui.details;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

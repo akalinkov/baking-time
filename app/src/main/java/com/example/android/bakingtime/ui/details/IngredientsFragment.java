@@ -1,4 +1,4 @@
-package com.example.android.bakingtime.ui;
+package com.example.android.bakingtime.ui.details;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;

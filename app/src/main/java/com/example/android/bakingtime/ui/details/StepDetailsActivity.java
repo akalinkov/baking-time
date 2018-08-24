@@ -1,17 +1,21 @@
-package com.example.android.bakingtime.ui;
+package com.example.android.bakingtime.ui.details;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.example.android.bakingtime.R;
+import com.example.android.bakingtime.model.Step;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class StepDetailsActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
+    private Step mStep;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -20,10 +24,10 @@ public class StepDetailsActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.previous_step:
-                    mTextMessage.setText(R.string.title_previous);
+                    // TODO
                     return true;
                 case R.id.next_step:
-                    mTextMessage.setText(R.string.title_next);
+                    // TODO
                     return true;
             }
             return false;
@@ -34,10 +38,23 @@ public class StepDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_details);
-
-        mTextMessage = findViewById(R.id.message);
         BottomNavigationView navigation = findViewById(R.id.navigation);
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        if (null == savedInstanceState) {
+            Intent intent = getIntent();
+            if (intent.hasExtra(Step.SAVED_INTENT)) {
+                Step step = intent.getParcelableExtra(Step.SAVED_INTENT);
+                mStep = (null != step ? step : new Step());
+            }
+        }
+
+        StepDetailsFragment detailsFragment = new StepDetailsFragment();
+        detailsFragment.setStep(mStep);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.step_details_container, detailsFragment)
+                .commit();
     }
 
 }

@@ -5,11 +5,14 @@ import android.os.Parcelable;
 
 public class Step implements Parcelable{
 
+    public static final String SAVED_INTENT = "saved_step_intent";
     public int id;
     public String shortDescription;
     public String description;
     public String videoURL;
     public String thumbnailURL;
+
+    public Step() {}
 
     protected Step(Parcel in) {
         id = in.readInt();

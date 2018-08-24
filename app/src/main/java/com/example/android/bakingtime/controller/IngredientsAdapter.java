@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Ingredient;
-import com.example.android.bakingtime.ui.IngredientViewHolder;
+import com.example.android.bakingtime.ui.details.IngredientViewHolder;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@ import android.support.test.espresso.IdlingResource;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.android.bakingtime.ui.MainActivity;
+import com.example.android.bakingtime.ui.recipes_list.MainActivity;
 
 import org.junit.After;
 import org.junit.Before;

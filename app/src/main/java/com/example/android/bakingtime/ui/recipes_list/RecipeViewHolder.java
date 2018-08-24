@@ -1,4 +1,4 @@
-package com.example.android.bakingtime.ui;
+package com.example.android.bakingtime.ui.recipes_list;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.controller.RecipesAdapter;
 import com.example.android.bakingtime.model.Recipe;
+import com.example.android.bakingtime.ui.OnItemClickListener;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
