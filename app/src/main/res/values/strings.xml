@@ -5,4 +5,5 @@
     <string name="title_activity_step_details">StepDetailsActivity</string>
     <string name="title_previous">Previous</string>
     <string name="title_next">Next</string>
+    <string name="download_failed_message">Download failed. Try again later</string>
 </resources>

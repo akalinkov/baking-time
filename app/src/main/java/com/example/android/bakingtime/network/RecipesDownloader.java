@@ -2,15 +2,10 @@ package com.example.android.bakingtime.network;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.android.bakingtime.idlingResource.SimpleIdlingResource;
 import com.example.android.bakingtime.model.Recipe;
-import com.squareup.moshi.JsonAdapter;
-import com.squareup.moshi.Moshi;
-import com.squareup.moshi.Types;
 
-import java.io.IOException;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -49,7 +44,7 @@ public class RecipesDownloader {
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 if (response.isSuccessful()) {
-                    callback.onDone(response.body());
+                    callback.onDownloadDone(response.body());
                     if (null != idlingResource) {
                         idlingResource.setIdleState(true);
                     }
@@ -58,7 +53,7 @@ public class RecipesDownloader {
 
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                callback.onFail();
+                callback.onDownloadFail();
             }
         });
     }

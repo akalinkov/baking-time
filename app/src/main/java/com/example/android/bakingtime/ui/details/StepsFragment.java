@@ -45,12 +45,13 @@ public class StepsFragment extends Fragment implements OnItemClickListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         try {
             mCallback = (OnItemClickListener) context;
         } catch (ClassCastException e) {
-            Log.d(TAG, String.format("onAttach: %s %s %s", context.getClass().getSimpleName(),
-                    " activity should implement interface", OnItemClickListener.class.getSimpleName()));
+            Log.d(TAG, String.format("onAttach: %s %s %s",
+                    context.getClass().getSimpleName(),
+                    " activity should implement interface",
+                    OnItemClickListener.class.getSimpleName()));
         }
     }
 

@@ -11,6 +11,7 @@ import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Ingredient;
 import com.example.android.bakingtime.ui.details.IngredientViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientViewHolder> {
@@ -39,6 +40,9 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientViewHolde
 
     @Override
     public int getItemCount() {
+        if (null == mIngredientsList) {
+            return 0;
+        }
         return mIngredientsList.size();
     }
 }

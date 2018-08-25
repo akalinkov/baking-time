@@ -2,6 +2,7 @@ package com.example.android.bakingtime.ui.recipes_list;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int RECIPE_VIEW_WIDTH = 800;
+    private static final String RECIPES_LIST = "recipesList_key";
     private RecipesAdapter mRecipesAdapter;
     public List<Recipe> mRecipes = new ArrayList<>();
 
@@ -48,25 +50,38 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        if (null == savedInstanceState) {
+            RecipesDownloader.requestRecipes(this, null);
+        } else {
+            restoreInstanceState(savedInstanceState);
+        }
+
         Log.d(TAG, "onCreate: setup recycler view");
         GridLayoutManager layoutManager = new GridLayoutManager(this, spanCount());
         mRecipesRecyclerView.setLayoutManager(layoutManager);
         mRecipesAdapter = new RecipesAdapter(mRecipes, this);
         mRecipesRecyclerView.setAdapter(mRecipesAdapter);
-
-        RecipesDownloader.requestRecipes(this, null);
     }
 
     @Override
-    public void onDone(@NonNull List<Recipe> recipes) {
-        Log.d(TAG, "onDone: ");
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "onSaveInstanceState: save recipe list state");
+        outState.putParcelableArrayList(RECIPES_LIST, (ArrayList<? extends Parcelable>) mRecipes);
+    }
+
+    @Override
+    public void onDownloadDone(@NonNull List<Recipe> recipes) {
+        Log.d(TAG, "onDownloadDone: data json downloaded");
         mRecipes = recipes;
         mRecipesAdapter.replaceRecipes(recipes);
     }
 
     @Override
-    public void onFail() {
-        Toast.makeText(this, "Download failed", Toast.LENGTH_LONG).show();
+    public void onDownloadFail() {
+        Toast.makeText(this,
+                getString(R.string.download_failed_message),
+                Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -85,7 +100,13 @@ public class MainActivity extends AppCompatActivity
         return mIdlingResource;
     }
 
+    private void restoreInstanceState(@NonNull Bundle inState) {
+        Log.d(TAG, "restoreInstanceState: get saved recipe list");
+        mRecipes = inState.getParcelableArrayList(RECIPES_LIST);
+    }
+
     private int spanCount() {
+        Log.d(TAG, "spanCount: calculate number of columns");
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
         return width / RECIPE_VIEW_WIDTH;
     }

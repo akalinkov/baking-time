@@ -1,12 +1,15 @@
 package com.example.android.bakingtime.ui.details;
 
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Step;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +19,8 @@ import butterknife.OnClick;
 
 public class StepDetailsActivity extends AppCompatActivity {
 
+    private static final String STEPS_LIST = "steps_list_key";
+    private static final String CURRENT_STEP = "current_step_key";
     @BindView(R.id.btn_prev)
     Button mPrevious;
     @BindView(R.id.btn_next)
@@ -34,9 +39,23 @@ public class StepDetailsActivity extends AppCompatActivity {
 
         if (null == savedInstanceState) {
             getExtras();
+        } else {
+            restoreSavedState(savedInstanceState);
         }
         addDetailsFragment();
         updateNavigationVisibility();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(STEPS_LIST, (ArrayList<? extends Parcelable>) mStepsList);
+        outState.putInt(CURRENT_STEP, currentStep);
+    }
+
+    private void restoreSavedState(@NonNull Bundle inState) {
+        mStepsList = inState.getParcelableArrayList(STEPS_LIST);
+        currentStep = inState.getInt(CURRENT_STEP);
     }
 
     private void addDetailsFragment() {
@@ -67,14 +86,12 @@ public class StepDetailsActivity extends AppCompatActivity {
     @OnClick(R.id.btn_prev)
     public void previousStep() {
         currentStep--;
-        updateNavigationVisibility();
         mDetailsFragment.changeStep(mStepsList.get(currentStep));
     }
 
     @OnClick(R.id.btn_next)
     public void nextStep() {
         currentStep++;
-        updateNavigationVisibility();
         mDetailsFragment.changeStep(mStepsList.get(currentStep));
     }
 }
