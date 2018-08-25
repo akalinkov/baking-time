@@ -27,8 +27,7 @@ import com.google.android.exoplayer2.util.Util;
 
 public class StepDetailsFragment extends Fragment {
 
-    public StepDetailsFragment() {
-    }
+    public StepDetailsFragment() { }
 
     private SimpleExoPlayer mPlayer;
     private Step mStep;
@@ -44,14 +43,43 @@ public class StepDetailsFragment extends Fragment {
         mPlayerView = rootView.findViewById(R.id.player);
         mDescription = rootView.findViewById(R.id.description);
         mStepTitle = rootView.findViewById(R.id.step_title);
-
-        mStepTitle.setText(mStep.shortDescription);
-        mDescription.setText(mStep.description);
-        buildPlayer();
+        initializePlayer();
         mPlayerView.setPlayer(mPlayer);
-        preparePlayer();
+
+        bindData();
+        setVideoVisibility();
 
         return rootView;
+    }
+
+    public void setStep(Step step) {
+        mStep = step;
+    }
+
+    public void changeStep(Step step) {
+        setStep(step);
+        bindData();
+        setVideoVisibility();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        releasePlayer();
+    }
+
+    private void setVideoVisibility() {
+        mPlayerView.setUseController(!mStep.videoURL.isEmpty());
+    }
+
+    private void bindData() {
+        mStepTitle.setText(mStep.shortDescription);
+        mDescription.setText(mStep.description);
+        preparePlayer();
+    }
+
+    private Uri videoUri() {
+        return Uri.parse(mStep.videoURL);
     }
 
     private void preparePlayer() {
@@ -63,18 +91,17 @@ public class StepDetailsFragment extends Fragment {
         mPlayer.prepare(videoSource);
     }
 
-    private Uri videoUri() {
-        return Uri.parse(mStep.videoURL);
-    }
 
-    public void setStep(Step step) {
-        mStep = step;
-    }
-
-    private void buildPlayer() {
+    private void initializePlayer() {
         TrackSelection.Factory trackSelectorFactory = new AdaptiveTrackSelection
                 .Factory(new DefaultBandwidthMeter());
         DefaultTrackSelector trackSelector = new DefaultTrackSelector(trackSelectorFactory);
         mPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
+    }
+
+    private void releasePlayer() {
+        mPlayer.stop();
+        mPlayer.release();
+        mPlayer = null;
     }
 }

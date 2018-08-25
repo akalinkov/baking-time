@@ -1,60 +1,80 @@
 package com.example.android.bakingtime.ui.details;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
+import android.widget.Button;
 
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Step;
 
+import java.util.Arrays;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class StepDetailsActivity extends AppCompatActivity {
 
-    private Step mStep;
+    @BindView(R.id.btn_prev)
+    Button mPrevious;
+    @BindView(R.id.btn_next)
+    Button mNext;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.previous_step:
-                    // TODO
-                    return true;
-                case R.id.next_step:
-                    // TODO
-                    return true;
-            }
-            return false;
-        }
-    };
+    private StepDetailsFragment mDetailsFragment;
+    private List<Step> mStepsList;
+    private int currentStep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_details);
-        BottomNavigationView navigation = findViewById(R.id.navigation);
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        ButterKnife.bind(this);
 
         if (null == savedInstanceState) {
-            Intent intent = getIntent();
-            if (intent.hasExtra(Step.SAVED_INTENT)) {
-                Step step = intent.getParcelableExtra(Step.SAVED_INTENT);
-                mStep = (null != step ? step : new Step());
-            }
+            getExtras();
         }
+        addDetailsFragment();
+        updateNavigationVisibility();
+    }
 
-        StepDetailsFragment detailsFragment = new StepDetailsFragment();
-        detailsFragment.setStep(mStep);
+    private void addDetailsFragment() {
+        mDetailsFragment = new StepDetailsFragment();
+        mDetailsFragment.setStep(mStepsList.get(currentStep));
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.step_details_container, detailsFragment)
+                .add(R.id.step_details_container, mDetailsFragment)
                 .commit();
     }
 
+    private void getExtras() {
+        if (getIntent().hasExtra(Step.SAVED_INTENT)) {
+            mStepsList = getIntent().getParcelableArrayListExtra(Step.SAVED_INTENT);
+        }
+        if (null == mStepsList) {
+            mStepsList = Arrays.asList(new Step());
+        }
+        if (getIntent().hasExtra(Step.CURRENT)) {
+            currentStep = getIntent().getIntExtra(Step.CURRENT, 0);
+        }
+    }
+
+    private void updateNavigationVisibility() {
+        mPrevious.setEnabled(currentStep != 0);
+        mNext.setEnabled(mStepsList.size()-1 != currentStep);
+    }
+
+    @OnClick(R.id.btn_prev)
+    public void previousStep() {
+        currentStep--;
+        updateNavigationVisibility();
+        mDetailsFragment.changeStep(mStepsList.get(currentStep));
+    }
+
+    @OnClick(R.id.btn_next)
+    public void nextStep() {
+        currentStep++;
+        updateNavigationVisibility();
+        mDetailsFragment.changeStep(mStepsList.get(currentStep));
+    }
 }

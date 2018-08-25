@@ -3,6 +3,7 @@ package com.example.android.bakingtime.ui.details;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import com.example.android.bakingtime.controller.StepsListAdapter;
 import com.example.android.bakingtime.model.Step;
 import com.example.android.bakingtime.ui.OnItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StepsFragment extends Fragment implements OnItemClickListener {
@@ -59,7 +61,8 @@ public class StepsFragment extends Fragment implements OnItemClickListener {
     @Override
     public void onItemClicked(int position) {
         Intent intent = new Intent(getContext(), StepDetailsActivity.class);
-        intent.putExtra(Step.SAVED_INTENT, mStepsList.get(position));
+        intent.putParcelableArrayListExtra(Step.SAVED_INTENT, (ArrayList<? extends Parcelable>) mStepsList);
+        intent.putExtra(Step.CURRENT, position);
         startActivity(intent);
     }
 }
