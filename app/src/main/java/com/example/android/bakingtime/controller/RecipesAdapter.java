@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Recipe;
-import com.example.android.bakingtime.ui.OnItemClickListener;
+import com.example.android.bakingtime.ui.OnRecipeClickListener;
 import com.example.android.bakingtime.ui.recipes_list.RecipeViewHolder;
 
 import java.util.List;
@@ -18,10 +18,10 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
 
     private static final String TAG = RecipesAdapter.class.getSimpleName();
     private List<Recipe> mRecipes;
-    public OnItemClickListener mRecipeCallback;
+    public OnRecipeClickListener mRecipeCallback;
 
     public RecipesAdapter(@NonNull List<Recipe> recipes,
-                          @NonNull OnItemClickListener recipeItemClickListener) {
+                          @NonNull OnRecipeClickListener recipeItemClickListener) {
         this.mRecipes = recipes;
         this.mRecipeCallback = recipeItemClickListener;
     }

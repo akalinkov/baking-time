@@ -20,7 +20,7 @@ import com.example.android.bakingtime.idlingResource.SimpleIdlingResource;
 import com.example.android.bakingtime.model.Recipe;
 import com.example.android.bakingtime.network.RecipesDownloader;
 import com.example.android.bakingtime.network.RecipesDownloaderCallback;
-import com.example.android.bakingtime.ui.OnItemClickListener;
+import com.example.android.bakingtime.ui.OnRecipeClickListener;
 import com.example.android.bakingtime.ui.details.RecipeDetailsActivity;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
-        implements RecipesDownloaderCallback, OnItemClickListener {
+        implements RecipesDownloaderCallback, OnRecipeClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int RECIPE_VIEW_WIDTH = 800;
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onItemClicked(int position) {
+    public void onRecipeClicked(int position) {
         Log.d(TAG, "onRecipeClick: #" + position);
         Intent intent = new Intent(this, RecipeDetailsActivity.class);
         intent.putExtra(Recipe.CLICKED, mRecipes.get(position));

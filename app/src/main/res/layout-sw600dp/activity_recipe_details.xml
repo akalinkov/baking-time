@@ -2,12 +2,13 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
     <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".4">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,8 +22,6 @@
                 android:layout_height="wrap_content"
                 android:scaleType="centerInside" />
 
-            <View style="@style/horizontal_divider" />
-
             <FrameLayout
                 android:id="@+id/steps_container"
                 android:layout_width="match_parent"
@@ -30,4 +29,12 @@
                 android:scaleType="centerInside" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+
+    <View style="@style/vertical_divider" />
+
+    <FrameLayout
+        android:id="@+id/step_details_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".6" />
 </LinearLayout>

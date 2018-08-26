@@ -10,12 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:gravity="center"
-        android:text="Instructions" />
+        android:gravity="start"
+        android:text="Instructions"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_steps_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+        android:paddingEnd="2dp"
+        android:paddingStart="2dp"
+        android:paddingTop="4dp"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 </LinearLayout>

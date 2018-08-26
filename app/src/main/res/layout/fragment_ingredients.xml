@@ -6,15 +6,19 @@
     android:orientation="vertical">
 
     <TextView
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
         android:id="@+id/tv_ingredients_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Ingredients" />
+        android:gravity="start"
+        android:text="Ingredients"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/gv_ingredients_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 </LinearLayout>

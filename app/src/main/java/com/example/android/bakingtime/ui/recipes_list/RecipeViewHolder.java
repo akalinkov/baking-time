@@ -1,14 +1,14 @@
 package com.example.android.bakingtime.ui.recipes_list;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.bakingtime.R;
-import com.example.android.bakingtime.controller.RecipesAdapter;
 import com.example.android.bakingtime.model.Recipe;
-import com.example.android.bakingtime.ui.OnItemClickListener;
+import com.example.android.bakingtime.ui.OnRecipeClickListener;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -16,7 +16,8 @@ import butterknife.ButterKnife;
 
 public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private OnItemClickListener mItemClickListener;
+    private static final String TAG = RecipeViewHolder.class.getSimpleName();
+    private OnRecipeClickListener mItemClickListener;
 
     @BindView(R.id.iv_recipe_icon)
     ImageView mImage;
@@ -28,7 +29,7 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.On
     TextView mServings;
 
     public RecipeViewHolder(View itemView,
-                            OnItemClickListener itemClickListener) {
+                            OnRecipeClickListener itemClickListener) {
         super(itemView);
         mItemClickListener = itemClickListener;
         ButterKnife.bind(this, itemView);
@@ -36,6 +37,7 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     public void bind(Recipe recipe) {
+        Log.d(TAG, "bind: recipe = " + recipe.name);
         mName.setText(recipe.name);
         mServings.setText(recipe.servings + " servings");
         if (null != recipe.image && !"".equals(recipe.image)) {
@@ -46,6 +48,7 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.On
 
     @Override
     public void onClick(View v) {
-        mItemClickListener.onItemClicked(getAdapterPosition());
+        Log.d(TAG, "onClick: #" + getAdapterPosition());
+        mItemClickListener.onRecipeClicked(getAdapterPosition());
     }
 }

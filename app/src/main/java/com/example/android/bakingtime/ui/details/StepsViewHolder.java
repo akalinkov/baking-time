@@ -6,19 +6,22 @@ import android.widget.TextView;
 
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Step;
-import com.example.android.bakingtime.ui.OnItemClickListener;
+import com.example.android.bakingtime.ui.OnStepsItemClickListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class StepsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private static final String STEP_FORMAT = "%d. %s";
-    private OnItemClickListener mCallback;
+    private OnStepsItemClickListener mCallback;
+
     @BindView(R.id.tv_step_description)
     TextView mDescription;
 
-    public StepsViewHolder(View itemView, OnItemClickListener stepClickListener) {
+    @BindView(R.id.step_number)
+    TextView mStepNumber;
+
+    public StepsViewHolder(View itemView, OnStepsItemClickListener stepClickListener) {
         super(itemView);
         mCallback = stepClickListener;
         ButterKnife.bind(this, itemView);
@@ -26,11 +29,12 @@ public class StepsViewHolder extends RecyclerView.ViewHolder implements View.OnC
     }
 
     public void bind(Step step) {
-        mDescription.setText(String.format(STEP_FORMAT, step.id, step.shortDescription));
+        mDescription.setText(step.shortDescription);
+        mStepNumber.setText(String.valueOf(step.id));
     }
 
     @Override
     public void onClick(View v) {
-        mCallback.onItemClicked(getAdapterPosition());
+        mCallback.onStepClicked(getAdapterPosition());
     }
 }

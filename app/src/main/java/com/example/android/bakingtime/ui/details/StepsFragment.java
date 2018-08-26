@@ -1,9 +1,7 @@
 package com.example.android.bakingtime.ui.details;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,17 +14,17 @@ import android.view.ViewGroup;
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.controller.StepsListAdapter;
 import com.example.android.bakingtime.model.Step;
-import com.example.android.bakingtime.ui.OnItemClickListener;
+import com.example.android.bakingtime.ui.OnStepsItemClickListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class StepsFragment extends Fragment implements OnItemClickListener {
+public class StepsFragment extends Fragment implements OnStepsItemClickListener {
 
     private static final String TAG = StepsFragment.class.getSimpleName();
 
     private List<Step> mStepsList;
-    private OnItemClickListener mCallback;
+    private OnStepsItemClickListener mCallback;
+    private StepsListAdapter mStepsAdapter;
 
     public StepsFragment() {
     }
@@ -37,8 +35,8 @@ public class StepsFragment extends Fragment implements OnItemClickListener {
         View rootView = inflater.inflate(R.layout.fragment_steps, container, false);
 
         RecyclerView stepsListView = rootView.findViewById(R.id.rv_steps_list);
-        StepsListAdapter stepsListAdapter = new StepsListAdapter(getContext(), mStepsList, this);
-        stepsListView.setAdapter(stepsListAdapter);
+        mStepsAdapter = new StepsListAdapter(getContext(), mStepsList, this);
+        stepsListView.setAdapter(mStepsAdapter);
         return rootView;
     }
 
@@ -46,12 +44,12 @@ public class StepsFragment extends Fragment implements OnItemClickListener {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mCallback = (OnItemClickListener) context;
+            mCallback = (OnStepsItemClickListener) context;
         } catch (ClassCastException e) {
             Log.d(TAG, String.format("onAttach: %s %s %s",
                     context.getClass().getSimpleName(),
                     " activity should implement interface",
-                    OnItemClickListener.class.getSimpleName()));
+                    OnStepsItemClickListener.class.getSimpleName()));
         }
     }
 
@@ -60,10 +58,12 @@ public class StepsFragment extends Fragment implements OnItemClickListener {
     }
 
     @Override
-    public void onItemClicked(int position) {
-        Intent intent = new Intent(getContext(), StepDetailsActivity.class);
-        intent.putParcelableArrayListExtra(Step.SAVED_INTENT, (ArrayList<? extends Parcelable>) mStepsList);
-        intent.putExtra(Step.CURRENT, position);
-        startActivity(intent);
+    public void onStepClicked(int position) {
+        Log.d(TAG, "onStepClicked: #" + position);
+        if (position == RecyclerView.NO_POSITION) return;
+        mStepsAdapter.notifySelectedItemchanged();
+        mStepsAdapter.setSelectedPosition(position);
+        mStepsAdapter.notifyItemChanged(position);
+        mCallback.onStepClicked(position);
     }
 }
