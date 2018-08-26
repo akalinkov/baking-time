@@ -1,4 +1,4 @@
-package com.example.android.bakingtime.ui.details;
+package com.example.android.bakingtime.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,11 +10,14 @@ import android.util.Log;
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Recipe;
 import com.example.android.bakingtime.model.Step;
-import com.example.android.bakingtime.ui.OnStepsItemClickListener;
+import com.example.android.bakingtime.ui.fragments.IngredientsFragment;
+import com.example.android.bakingtime.ui.fragments.StepDetailsFragment;
+import com.example.android.bakingtime.ui.fragments.StepsFragment;
+import com.example.android.bakingtime.ui.listeners.OnStepsItemClickListener;
 
 import java.util.ArrayList;
 
-public class RecipeDetailsActivity extends AppCompatActivity implements OnStepsItemClickListener{
+public class RecipeDetailsActivity extends AppCompatActivity implements OnStepsItemClickListener {
 
     private static final String TAG = RecipeDetailsActivity.class.getSimpleName();
     private static final String RECIPE = "recipe_key";
@@ -38,7 +41,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnStepsI
         if (null != findViewById(R.id.step_details_container)) {
             mTwoPane = true;
             StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
-            stepDetailsFragment.setStep(mRecipe.steps.get(0));
+            stepDetailsFragment.setStepsList(mRecipe.steps);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.step_details_container, stepDetailsFragment)
                     .commit();
@@ -79,12 +82,15 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnStepsI
     @Override
     public void onStepClicked(int position) {
         if (mTwoPane) {
+            Log.d(TAG, "onStepClicked: two panes - create new fragment");
             StepDetailsFragment newFragment = new StepDetailsFragment();
-            newFragment.setStep(mRecipe.steps.get(position));
+            newFragment.setStepsList(mRecipe.steps);
+            newFragment.setCurrentStep(position);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.step_details_container, newFragment)
                     .commit();
         } else {
+            Log.d(TAG, "onStepClicked: one pane - start new activity");
             Intent intent = new Intent(this, StepDetailsActivity.class);
             intent.putParcelableArrayListExtra(Step.SAVED_INTENT, (ArrayList<? extends Parcelable>) mRecipe.steps);
             intent.putExtra(Step.CURRENT, position);

@@ -1,4 +1,4 @@
-package com.example.android.bakingtime.controller;
+package com.example.android.bakingtime.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Step;
-import com.example.android.bakingtime.ui.OnStepsItemClickListener;
-import com.example.android.bakingtime.ui.details.StepsViewHolder;
+import com.example.android.bakingtime.ui.listeners.OnStepsItemClickListener;
+import com.example.android.bakingtime.ui.viewholders.StepsViewHolder;
 
 import java.util.List;
 

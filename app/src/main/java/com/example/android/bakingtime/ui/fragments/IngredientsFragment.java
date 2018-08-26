@@ -1,15 +1,14 @@
-package com.example.android.bakingtime.ui.details;
+package com.example.android.bakingtime.ui.fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.bakingtime.R;
-import com.example.android.bakingtime.controller.IngredientsAdapter;
+import com.example.android.bakingtime.adapters.IngredientsAdapter;
 import com.example.android.bakingtime.model.Ingredient;
 
 import java.util.List;

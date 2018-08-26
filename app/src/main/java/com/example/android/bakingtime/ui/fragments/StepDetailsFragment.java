@@ -1,7 +1,8 @@
-package com.example.android.bakingtime.ui.details;
+package com.example.android.bakingtime.ui.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,10 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Step;
+import com.example.android.bakingtime.utils.Device;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -26,55 +30,95 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Optional;
+import butterknife.Unbinder;
+
 public class StepDetailsFragment extends Fragment {
 
     private static final String TAG = StepDetailsFragment.class.getSimpleName();
 
     private static final String PLAYER_POSITION = "player_position_key";
-    private static final String STEP = "step_key";
+    private static final String STEPS_LIST = "steps_list_key";
+    private static final String CURRENT_STEP = "current_step_key";
 
     private SimpleExoPlayer mPlayer;
     private long mPlayerPosition;
-    private Step mStep;
+    private List<Step> mStepsList;
+    private int mCurrentStep;
 
-    private TextView mStepTitle;
-    private TextView mDescription;
-    private PlayerView mPlayerView;
 
-    public StepDetailsFragment() { }
+    @BindView(R.id.btn_prev)
+    Button mPrevious;
+
+    @BindView(R.id.btn_next)
+    Button mNext;
+
+    @BindView(R.id.navigation)
+    LinearLayout mNavigation;
+
+    @BindView(R.id.step_title)
+    TextView mStepTitle;
+
+    @BindView(R.id.description)
+    TextView mDescription;
+
+    @BindView(R.id.player)
+    PlayerView mPlayerView;
+
+    private Unbinder unbinder;
+
+    public StepDetailsFragment() {
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: invoked");
         View rootView = inflater.inflate(R.layout.fragment_step_details, container, false);
-        findViews(rootView);
+        unbinder = ButterKnife.bind(this, rootView);
+//        findViews(rootView);
 
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);
         }
 
         bindData();
+        updateNavigationVisibility();
         return rootView;
     }
 
-    public void setStep(@NonNull Step step) {
-        Log.d(TAG, "setStep: #" + step.id);
-        mStep = step;
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
-    public void changeStep(@NonNull Step step) {
+    public void setCurrentStep(int currentStep) {
+        Log.d(TAG, "setCurrentStep: #" + currentStep);
+        mCurrentStep = currentStep;
+    }
+
+    public void setStepsList(@NonNull List<Step> steps) {
+        Log.d(TAG, "setStepsList: invoked");
+        mStepsList = steps;
+    }
+
+    private Step getStep() {
+        return mStepsList.get(mCurrentStep);
+    }
+
+    private void changeStep(@NonNull int stepIndex) {
         Log.d(TAG, "changeStep: invoked");
-        setStep(step);
+        setCurrentStep(stepIndex);
+        updateNavigationVisibility();
         bindData();
         preparePlayer();
-    }
-
-    private void findViews(View rootView) {
-        Log.d(TAG, "findViews: invoked");
-        mPlayerView = rootView.findViewById(R.id.player);
-        mDescription = rootView.findViewById(R.id.description);
-        mStepTitle = rootView.findViewById(R.id.step_title);
     }
 
     @Override
@@ -96,13 +140,15 @@ public class StepDetailsFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         Log.d(TAG, "onSaveInstanceState: invoked");
         outState.putLong(PLAYER_POSITION, null == mPlayer ? 0 : mPlayer.getCurrentPosition());
-        outState.putParcelable(STEP, mStep);
+        outState.putParcelableArrayList(STEPS_LIST, (ArrayList<? extends Parcelable>) mStepsList);
+        outState.putInt(CURRENT_STEP, mCurrentStep);
     }
 
     private void restoreInstanceState(@NonNull Bundle inState) {
         Log.d(TAG, "restoreInstanceState: invoked");
-        mPlayerPosition = inState.getLong(PLAYER_POSITION, 0);
-        mStep = inState.getParcelable(STEP);
+        mPlayerPosition = inState.getLong(PLAYER_POSITION);
+        mStepsList = inState.getParcelableArrayList(STEPS_LIST);
+        mCurrentStep = inState.getInt(CURRENT_STEP);
     }
 
     private void setPlayerVisibility(boolean isPlayerVisible) {
@@ -117,18 +163,29 @@ public class StepDetailsFragment extends Fragment {
 
     private void bindData() {
         Log.d(TAG, "bindData: invoked");
-        mStepTitle.setText(mStep.shortDescription);
-        mDescription.setText(mStep.description);
+        if (Device.isLandscape(getContext())
+                && !Device.isTablet(getContext())
+                && !getStep().videoURL.isEmpty()) {
+            Log.d(TAG, "bindData: set title and description invisible");
+            mStepTitle.setVisibility(View.GONE);
+            mDescription.setVisibility(View.GONE);
+            return;
+        }
+        Log.d(TAG, "bindData: set title and description invisible");
+        mStepTitle.setVisibility(View.VISIBLE);
+        mDescription.setVisibility(View.VISIBLE);
+        mStepTitle.setText(getStep().shortDescription);
+        mDescription.setText(getStep().description);
     }
 
     private Uri videoUri() {
-        Log.d(TAG, "videoUri: parse video URL = " + mStep.videoURL);
-        return Uri.parse(mStep.videoURL);
+        Log.d(TAG, "videoUri: parse video URL = " + getStep().videoURL);
+        return Uri.parse(getStep().videoURL);
     }
 
     private void preparePlayer() {
         Log.d(TAG, "preparePlayer: invoked");
-        if (null == mStep.videoURL || mStep.videoURL.isEmpty()) {
+        if (null == getStep().videoURL || getStep().videoURL.isEmpty()) {
             Log.d(TAG, "preparePlayer: video url is empty - stop method execution");
             setPlayerVisibility(false);
             return;
@@ -156,5 +213,36 @@ public class StepDetailsFragment extends Fragment {
         mPlayer.stop();
         mPlayer.release();
         mPlayer = null;
+    }
+
+    private boolean shouldNavigationBeVisible() {
+        if (Device.isTablet(getContext())) return false;
+        if (Device.isLandscape(getContext())
+                && !getStep().videoURL.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    private void updateNavigationVisibility() {
+        if (!shouldNavigationBeVisible()) {
+            mNavigation.setVisibility(View.GONE);
+            return;
+        }
+        mNavigation.setVisibility(View.VISIBLE);
+        mPrevious.setEnabled(mCurrentStep != 0);
+        mNext.setEnabled(mStepsList.size() - 1 != mCurrentStep);
+    }
+
+    @Optional
+    @OnClick(R.id.btn_prev)
+    public void previousStep() {
+        changeStep(--mCurrentStep);
+    }
+
+    @Optional
+    @OnClick(R.id.btn_next)
+    public void nextStep() {
+        changeStep(++mCurrentStep);
     }
 }

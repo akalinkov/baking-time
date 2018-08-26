@@ -1,4 +1,4 @@
-package com.example.android.bakingtime.controller;
+package com.example.android.bakingtime.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Recipe;
-import com.example.android.bakingtime.ui.OnRecipeClickListener;
-import com.example.android.bakingtime.ui.recipes_list.RecipeViewHolder;
+import com.example.android.bakingtime.ui.listeners.OnRecipeClickListener;
+import com.example.android.bakingtime.ui.viewholders.RecipeViewHolder;
 
 import java.util.List;
 

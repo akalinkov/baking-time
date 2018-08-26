@@ -1,4 +1,4 @@
-package com.example.android.bakingtime.controller;
+package com.example.android.bakingtime.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,9 +9,8 @@ import android.view.ViewGroup;
 
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Ingredient;
-import com.example.android.bakingtime.ui.details.IngredientViewHolder;
+import com.example.android.bakingtime.ui.viewholders.IngredientViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientViewHolder> {

@@ -1,4 +1,4 @@
-package com.example.android.bakingtime.ui.recipes_list;
+package com.example.android.bakingtime.ui;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -15,13 +15,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.android.bakingtime.R;
-import com.example.android.bakingtime.controller.RecipesAdapter;
+import com.example.android.bakingtime.adapters.RecipesAdapter;
 import com.example.android.bakingtime.idlingResource.SimpleIdlingResource;
 import com.example.android.bakingtime.model.Recipe;
 import com.example.android.bakingtime.network.RecipesDownloader;
 import com.example.android.bakingtime.network.RecipesDownloaderCallback;
-import com.example.android.bakingtime.ui.OnRecipeClickListener;
-import com.example.android.bakingtime.ui.details.RecipeDetailsActivity;
+import com.example.android.bakingtime.ui.listeners.OnRecipeClickListener;
 
 import java.util.ArrayList;
 import java.util.List;

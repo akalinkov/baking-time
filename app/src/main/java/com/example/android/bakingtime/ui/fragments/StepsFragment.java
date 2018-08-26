@@ -1,4 +1,4 @@
-package com.example.android.bakingtime.ui.details;
+package com.example.android.bakingtime.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.bakingtime.R;
-import com.example.android.bakingtime.controller.StepsListAdapter;
+import com.example.android.bakingtime.adapters.StepsListAdapter;
 import com.example.android.bakingtime.model.Step;
-import com.example.android.bakingtime.ui.OnStepsItemClickListener;
+import com.example.android.bakingtime.ui.listeners.OnStepsItemClickListener;
 
 import java.util.List;
 
