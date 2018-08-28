@@ -1,8 +1,12 @@
 package com.example.android.bakingtime.ui;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -17,10 +21,12 @@ import android.widget.Toast;
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.adapters.RecipesAdapter;
 import com.example.android.bakingtime.idlingResource.SimpleIdlingResource;
+import com.example.android.bakingtime.model.Ingredient;
 import com.example.android.bakingtime.model.Recipe;
 import com.example.android.bakingtime.network.RecipesDownloader;
 import com.example.android.bakingtime.network.RecipesDownloaderCallback;
 import com.example.android.bakingtime.ui.listeners.OnRecipeClickListener;
+import com.example.android.bakingtime.widget.RecipeWidget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,8 +92,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRecipeClicked(int position) {
         Log.d(TAG, "onRecipeClick: #" + position);
+        Recipe recipe = mRecipes.get(position);
+        PreferencesHelper.saveIngredients(this, recipe);
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidget.class));
+        Log.d(TAG, "onRecipeClicked: notifyAppWidgetViewDataChanged");
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_ingredients);
+
         Intent intent = new Intent(this, RecipeDetailsActivity.class);
-        intent.putExtra(Recipe.CLICKED, mRecipes.get(position));
+        intent.putExtra(Recipe.CLICKED, recipe);
         startActivity(intent);
     }
 
@@ -109,4 +123,5 @@ public class MainActivity extends AppCompatActivity
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
         return width / RECIPE_VIEW_WIDTH;
     }
+
 }
