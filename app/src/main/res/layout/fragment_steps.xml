@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:gravity="start"
-        android:text="Instructions"
+        android:text="@string/instructions_label"
         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 

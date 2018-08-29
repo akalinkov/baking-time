@@ -47,6 +47,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnStepsI
                     .commit();
         }
 
+        setTitle(mRecipe.name);
+
         IngredientsFragment ingredientsFragment = new IngredientsFragment();
         ingredientsFragment.setIngredientsList(mRecipe.ingredients);
         getSupportFragmentManager().beginTransaction()

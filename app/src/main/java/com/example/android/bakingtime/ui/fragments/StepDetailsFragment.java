@@ -82,7 +82,6 @@ public class StepDetailsFragment extends Fragment {
         Log.d(TAG, "onCreateView: invoked");
         View rootView = inflater.inflate(R.layout.fragment_step_details, container, false);
         unbinder = ButterKnife.bind(this, rootView);
-//        findViews(rootView);
 
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);
@@ -115,6 +114,7 @@ public class StepDetailsFragment extends Fragment {
 
     private void changeStep(@NonNull int stepIndex) {
         Log.d(TAG, "changeStep: invoked");
+        mPlayer.stop();
         setCurrentStep(stepIndex);
         updateNavigationVisibility();
         bindData();
@@ -244,5 +244,9 @@ public class StepDetailsFragment extends Fragment {
     @OnClick(R.id.btn_next)
     public void nextStep() {
         changeStep(++mCurrentStep);
+    }
+
+    public int getCurrentStep() {
+        return mCurrentStep;
     }
 }

@@ -61,6 +61,7 @@ dependencies {
     androidTestImplementation "com.android.support.test:runner:$runner_version"
     androidTestImplementation "com.android.support.test:rules:$runner_version"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:' + espresso_version
     androidTestImplementation 'org.hamcrest:hamcrest-core:' + hamcrest_version
 
 }

@@ -25,6 +25,7 @@ public class StepDetailsActivity extends AppCompatActivity {
 
     private static final String STEPS_LIST = "steps_list_key";
     private static final String CURRENT_STEP = "current_step_key";
+    private static final String STEP_FRAGMENT_TAG = "step_fragment_tag";
 
     private StepDetailsFragment mDetailsFragment;
     private List<Step> mStepsList;
@@ -32,11 +33,8 @@ public class StepDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        if (Device.isLandscape(this)) enableFullScreen();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_details);
-
-        ButterKnife.bind(this);
 
         if (null == savedInstanceState) {
             getExtras();
@@ -66,7 +64,7 @@ public class StepDetailsActivity extends AppCompatActivity {
         mDetailsFragment.setStepsList(mStepsList);
         mDetailsFragment.setCurrentStep(currentStep);
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.step_details_container, mDetailsFragment)
+                .replace(R.id.step_details_container, mDetailsFragment, STEP_FRAGMENT_TAG)
                 .commit();
     }
 
@@ -83,9 +81,12 @@ public class StepDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void enableFullScreen() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        StepDetailsFragment fragment = (StepDetailsFragment) getSupportFragmentManager()
+                .findFragmentByTag(STEP_FRAGMENT_TAG);
+        currentStep = fragment.getCurrentStep();
+        Log.d(TAG, "onPause: currentStep = #" + currentStep);
     }
 }

@@ -40,9 +40,8 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.On
         Log.d(TAG, "bind: recipe = " + recipe.name);
         mName.setText(recipe.name);
         mServings.setText(recipe.servings + " servings");
-        if (null != recipe.image && !"".equals(recipe.image)) {
-            // TODO: convert image url into URI. Handle exceptions.
-            Picasso.get().load("http://clipart-library.com/images/5cR485Eca.jpg").into(mImage);
+        if (null != recipe.image && !recipe.image.isEmpty()) {
+            Picasso.get().load(recipe.image).into(mImage);
         }
     }
 

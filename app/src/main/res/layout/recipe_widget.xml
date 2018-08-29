@@ -10,7 +10,7 @@
         android:layout_height="50dp"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
-        android:text="Select a recipe from the app"
+        android:text="@string/widget_instruction"
         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
     <ListView
