@@ -39,7 +39,7 @@ public class SelectRecipeTest {
     }
 
     @Test
-    public void recipe_details_screen_displayed_on_recipe_clicked() throws InterruptedException {
+    public void recipe_details_screen_displayed_on_recipe_clicked() {
         onView(withId(R.id.rv_recipes_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
         onView(allOf(instanceOf(TextView.class), withParent(withResourceName("action_bar"))))
