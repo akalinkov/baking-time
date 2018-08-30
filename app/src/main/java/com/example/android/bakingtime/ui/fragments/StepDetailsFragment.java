@@ -46,12 +46,17 @@ public class StepDetailsFragment extends Fragment {
     private static final String PLAYER_POSITION = "player_position_key";
     private static final String STEPS_LIST = "steps_list_key";
     private static final String CURRENT_STEP = "current_step_key";
+    private static final String AUTO_PLAY_KEY = "auto_play_key";
+    private static final String CURRENT_WINDOW_KEY = "current_window_key";
 
-    private SimpleExoPlayer mPlayer;
-    private long mPlayerPosition;
     private List<Step> mStepsList;
     private int mCurrentStep;
 
+    private long mPlaybackPosition;
+    private boolean mAutoPlay;
+    private int mCurrentWindow;
+
+    private SimpleExoPlayer mPlayer;
 
     @BindView(R.id.btn_prev)
     Button mPrevious;
@@ -139,16 +144,20 @@ public class StepDetailsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         Log.d(TAG, "onSaveInstanceState: invoked");
-        outState.putLong(PLAYER_POSITION, null == mPlayer ? 0 : mPlayer.getCurrentPosition());
+        outState.putLong(PLAYER_POSITION, mPlaybackPosition);
         outState.putParcelableArrayList(STEPS_LIST, (ArrayList<? extends Parcelable>) mStepsList);
         outState.putInt(CURRENT_STEP, mCurrentStep);
+        outState.putBoolean(AUTO_PLAY_KEY, mAutoPlay);
+        outState.putInt(CURRENT_WINDOW_KEY, mCurrentWindow);
     }
 
     private void restoreInstanceState(@NonNull Bundle inState) {
         Log.d(TAG, "restoreInstanceState: invoked");
-        mPlayerPosition = inState.getLong(PLAYER_POSITION);
         mStepsList = inState.getParcelableArrayList(STEPS_LIST);
         mCurrentStep = inState.getInt(CURRENT_STEP);
+        mPlaybackPosition = inState.getLong(PLAYER_POSITION);
+        mAutoPlay = inState.getBoolean(AUTO_PLAY_KEY);
+        mCurrentWindow = inState.getInt(CURRENT_WINDOW_KEY);
     }
 
     private void setPlayerVisibility(boolean isPlayerVisible) {
@@ -190,13 +199,15 @@ public class StepDetailsFragment extends Fragment {
             setPlayerVisibility(false);
             return;
         }
+        setPlayerVisibility(true);
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(),
                 Util.getUserAgent(getContext(), "baking_time"),
                 new DefaultBandwidthMeter());
         MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(videoUri());
+        mPlayer.setPlayWhenReady(mAutoPlay);
+        mPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
         mPlayer.prepare(videoSource);
-        setPlayerVisibility(true);
     }
 
     private void initializePlayer() {
@@ -210,6 +221,9 @@ public class StepDetailsFragment extends Fragment {
 
     private void releasePlayer() {
         Log.d(TAG, "releasePlayer: stop and release player");
+        mPlaybackPosition = mPlayer.getCurrentPosition();
+        mAutoPlay = mPlayer.getPlayWhenReady();
+        mCurrentWindow = mPlayer.getCurrentWindowIndex();
         mPlayer.stop();
         mPlayer.release();
         mPlayer = null;
@@ -244,9 +258,5 @@ public class StepDetailsFragment extends Fragment {
     @OnClick(R.id.btn_next)
     public void nextStep() {
         changeStep(++mCurrentStep);
-    }
-
-    public int getCurrentStep() {
-        return mCurrentStep;
     }
 }

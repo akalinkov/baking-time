@@ -30,6 +30,8 @@ public class StepDetailsActivity extends AppCompatActivity {
     private StepDetailsFragment mDetailsFragment;
     private List<Step> mStepsList;
     private int currentStep;
+    private boolean autoPlay;
+    private long playbackPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +40,10 @@ public class StepDetailsActivity extends AppCompatActivity {
 
         if (null == savedInstanceState) {
             getExtras();
+            addDetailsFragment();
         } else {
             restoreSavedState(savedInstanceState);
         }
-        addDetailsFragment();
     }
 
     @Override
@@ -84,9 +86,5 @@ public class StepDetailsActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        StepDetailsFragment fragment = (StepDetailsFragment) getSupportFragmentManager()
-                .findFragmentByTag(STEP_FRAGMENT_TAG);
-        currentStep = fragment.getCurrentStep();
-        Log.d(TAG, "onPause: currentStep = #" + currentStep);
     }
 }
