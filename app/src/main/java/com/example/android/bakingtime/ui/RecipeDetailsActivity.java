@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.example.android.bakingtime.R;
 import com.example.android.bakingtime.model.Recipe;
@@ -31,6 +33,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnStepsI
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: invoked");
         setContentView(R.layout.activity_recipe_details);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (null == savedInstanceState) {
             extractRecipeFromIntent(getIntent());
@@ -72,6 +76,16 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnStepsI
     private void restoreInstanceState(@NonNull Bundle inState) {
         Log.d(TAG, "restoreInstanceState: recipe");
         mRecipe = inState.getParcelable(RECIPE);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
