@@ -205,9 +205,9 @@ public class StepDetailsFragment extends Fragment {
                 new DefaultBandwidthMeter());
         MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(videoUri());
+        mPlayer.prepare(videoSource);
         mPlayer.setPlayWhenReady(mAutoPlay);
         mPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
-        mPlayer.prepare(videoSource);
     }
 
     private void initializePlayer() {
