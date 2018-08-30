@@ -1,6 +1,7 @@
 package com.example.android.bakingtime.ui.viewholders;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,7 +41,7 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.On
         Log.d(TAG, "bind: recipe = " + recipe.name);
         mName.setText(recipe.name);
         mServings.setText(recipe.servings + " servings");
-        if (null != recipe.image && !recipe.image.isEmpty()) {
+        if (!TextUtils.isEmpty(recipe.image)) {
             Picasso.get().load(recipe.image).into(mImage);
         }
     }
