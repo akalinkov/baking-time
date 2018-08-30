@@ -16,6 +16,7 @@ import com.example.android.bakingtime.ui.fragments.IngredientsFragment;
 import com.example.android.bakingtime.ui.fragments.StepDetailsFragment;
 import com.example.android.bakingtime.ui.fragments.StepsFragment;
 import com.example.android.bakingtime.ui.listeners.OnStepsItemClickListener;
+import com.example.android.bakingtime.utils.Device;
 
 import java.util.ArrayList;
 
@@ -25,8 +26,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnStepsI
     private static final String RECIPE = "recipe_key";
     private static final String STEP_FRAGMENT_TAG = "steps_tag";
     private Recipe mRecipe = new Recipe();
-
-    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +41,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnStepsI
             restoreInstanceState(savedInstanceState);
         }
 
-        if (null != findViewById(R.id.step_details_container)) {
-            mTwoPane = true;
+        if (Device.isTablet(this)) {
             StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
             stepDetailsFragment.setStepsList(mRecipe.steps);
             getSupportFragmentManager().beginTransaction()
@@ -97,7 +95,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnStepsI
 
     @Override
     public void onStepClicked(int position) {
-        if (mTwoPane) {
+        if (Device.isTablet(this)) {
             Log.d(TAG, "onStepClicked: two panes - create new fragment");
             StepDetailsFragment newFragment = new StepDetailsFragment();
             newFragment.setStepsList(mRecipe.steps);
